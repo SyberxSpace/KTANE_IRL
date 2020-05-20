@@ -35,6 +35,7 @@
 CRGB leds[NUM_GRID_LEDS];
 CRGB indicator[1];
 
+#define debounceTime     20
 Bounce up_db =    Bounce();
 Bounce left_db =  Bounce();
 Bounce down_db =  Bounce();
@@ -115,13 +116,13 @@ void setup() {
   pinMode(SETUP, INPUT_PULLUP);
 
   up_db.attach(UP);
-  up_db.interval(5);
+  up_db.interval(debounceTime);
   left_db.attach(LEFT);
-  left_db.interval(5);
+  left_db.interval(debounceTime);
   down_db.attach(DOWN);
-  down_db.interval(5);
+  down_db.interval(debounceTime);
   right_db.attach(RIGHT);
-  right_db.interval(5);
+  right_db.interval(debounceTime);
   
   FastLED.addLeds<WS2812B, SCREEN, GRB>(leds, NUM_GRID_LEDS); //setup leds
   FastLED.addLeds<WS2812B, INDICATOR, GRB>(indicator, 1);
