@@ -1,8 +1,8 @@
 # Package Manager Libraries
 
-• FastLED https://github.com/FastLED/FastLED
+• [FastLED](https://github.com/FastLED/FastLED)
 
-• Bounce2 https://github.com/thomasfredericks/Bounce2
+• [Bounce2](https://github.com/thomasfredericks/Bounce2)
 
 
 # Modified Libraries (available here)
