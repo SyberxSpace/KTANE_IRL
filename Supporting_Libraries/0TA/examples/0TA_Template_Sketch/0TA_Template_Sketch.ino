@@ -1,6 +1,8 @@
-// SKETCH NAME by Nicholas Schwankl (Syber-Space)
-// Uses 0TA (if OTA enabled), and LIBRARIES.
-// Copyright Statement
+// OTA and Multi-core Template by Nicholas Schwankl (Syber-Space)
+
+// Uses 0TA (if OTA enabled).
+// Feel free to use this template for any project (no need to include attribution).
+// If OTA does now work properly consider increasing stackSize.
 
 //++++++++++ PRE-PROCESSOR OPTIONS ++++++++++//
 
