@@ -9,7 +9,7 @@
 
 • [0TA](https://github.com/SyberxSpace/KTANE_IRL/tree/master/Supporting_Libraries/0TA) based on https://github.com/SensorsIot/ESP32-OTA
 
-Use these libraries at your own risk as I cannot guarantee compatability or predictable behavoir in all scenarios.
+Use these libraries at your own risk as I cannot guarantee compatibility or predictable behavior in all scenarios.
 
 # Other Resources
 
