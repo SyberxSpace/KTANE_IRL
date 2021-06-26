@@ -6,7 +6,7 @@
 #include <FastLED.h>
 #include <Bounce2.h>
 
-#include "KTANE_XT_DAC_Audio.h"
+#include <KTANE_XT_DAC_Audio.h>
 
 // Compilation Options //
 
