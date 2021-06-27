@@ -2,6 +2,11 @@
 #define KTANE_CONTROL
 
 #include <Arduino.h>
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <WiFiUdp.h>
+#include <ArduinoOTA.h>
+#include <TelnetStream.h>
 
 class Edgework {
     
@@ -35,10 +40,35 @@ class Edgework {
         edgeworkType type = EDGEWORK_TYPE_NONE;    // Stores the type of edgework
         short data = 0;                            // Stores the data the edgework contains
     
+};
+
+class SerialNumber {
+
+    private:
+        long data;
+        void updateTags();
+
+    public:
+        void create(byte byte1, byte byte2, byte byte3, byte byte4);
+        bool fill(String serialString);
+
+        String label();
+        bool hasVowel = false;
+        bool isEven = false;
+        bool isOdd = false;
+        byte byte1();
+        byte byte2();
+        byte byte3();
+        byte byte4();
 
 };
 
 class ModuleID {
+
+    private:
+        short data = 0;     // Stores the complete module CANID
+
+        byte checkChar(byte letterIn);
 
     public:
         enum moduleClasses : byte {
@@ -60,11 +90,22 @@ class ModuleID {
         bool isControl();
         byte moduleSign();
 
-    private:
-        short data = 0;     // Stores the complete module CANID
-
-        byte checkChar(byte letterIn);
-
 };
+
+/*
+class KTANE {
+
+    public:
+        KTANE(String type, int class, int signature);
+        Edgework edgework1;
+        Edgework edgework2;
+        Edgework edgework3;
+        Edgework edgework4;
+        Edgework edgework5;
+        SerialNumber serialNum;
+};
+*/
+
+void setupOTA(ModuleID thisModule, const char* ssid, const char* password);
 
 #endif
