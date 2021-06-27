@@ -3,31 +3,43 @@
 // ++++++++ OTA ++++++++ //
 
 void setupOTA(ModuleID thisModule, const char* ssid, const char* password) {
-  // Configure the hostname
-  uint16_t maxlen = 12;
-  char *fullhostname = new char[maxlen];
-  snprintf(fullhostname, maxlen, "KTANE-%c%c-%.2i", thisModule.letter1(), thisModule.letter2(), (int) thisModule.moduleSign());
-  ArduinoOTA.setHostname(fullhostname);
-  delete[] fullhostname;
+    // Configure the hostname
+    uint16_t maxlen = 12;
+    char *fullhostname = new char[maxlen];
+    snprintf(fullhostname, maxlen, "KTANE-%c%c-%.2i", thisModule.letter1(), thisModule.letter2(), (int) thisModule.moduleSign());
+    ArduinoOTA.setHostname(fullhostname);
+    delete[] fullhostname;
 
-  // Configure and start the WiFi station
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
+    // Configure and start the WiFi station
+    byte rebootCounter = 0;
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
 
-  // Wait for connection
-  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
-    Serial.println("Connection Failed! Rebooting...");
-    delay(5000);
-    ESP.restart();
-  }
+    // Wait for connection
+    while (WiFi.waitForConnectResult() != WL_CONNECTED) {
+        if(rebootCounter < 3){
+            Serial.println("Connection Failed! Retrying...");
+            WiFi.persistent(false);
+            WiFi.disconnect();
+            WiFi.mode(WIFI_OFF);
+            delay (1000);
+            WiFi.mode(WIFI_STA);
+            WiFi.begin(ssid, password);
+            delay(2000);
+        }else{
+            Serial.println("Connection Failed! Rebooting...");
+            delay(5000);
+            ESP.restart();
+        }
 
-  ArduinoOTA.onStart([]() {
+    }
+
+    ArduinoOTA.onStart([]() {
         String type;
         if (ArduinoOTA.getCommand() == U_FLASH)
-        type = "sketch";
+            type = "sketch";
         else // U_SPIFFS
-        type = "filesystem";
-
+            type = "filesystem";
         // NOTE: if updating SPIFFS this would be the place to unmount SPIFFS using SPIFFS.end()
         Serial.println("Start updating " + type);
     });
