@@ -195,6 +195,31 @@ bool Edgework::isBlank() {
 }
 
 
+// ++++++++ Serial Number ++++++++ //
+
+String SerialNumber::label() {
+    String output = "??????";
+    if ((data & 0xFC000000) != 0){
+        output.setCharAt(0, ((data & 0xFC000000) << 24) + 'A' - 1);
+    }
+}
+
+void SerialNumber::updateTags() {
+    
+}
+
+void SerialNumber::create(byte byte1, byte byte2, byte byte3, byte byte4) {
+    data = 0x00000000;
+    data = data + byte1;
+    data = data << 8;
+    data = data + byte2;
+    data = data << 8;
+    data = data + byte3;
+    data = data << 8;
+    data = data + byte4;
+    SerialNumber::updateTags();
+}
+
 
 // ++++++++ CAN ID ++++++++ //
 

@@ -1,0 +1,4 @@
+Add Credentials to credentials.h in this directory.
+
+#define mySSID      "SSID"
+#define myPassword  "Password"
