@@ -44,18 +44,21 @@ class Edgework {
 
 class SerialNumber {
 
+    public:
+        bool hasVowel = false;
+        bool isEven = false;
+        bool isOdd = false;
+
+        String label();
+
     private:
-        long data;
+        long data = 0x00000000;
         void updateTags();
 
     public:
         void create(byte byte1, byte byte2, byte byte3, byte byte4);
         bool fill(String serialString);
 
-        String label();
-        bool hasVowel = false;
-        bool isEven = false;
-        bool isOdd = false;
         byte byte1();
         byte byte2();
         byte byte3();
