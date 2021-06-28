@@ -52,7 +52,7 @@ void setup() {
 
 	*/
 
-	thisModule.fill("AB", thisModule.MODULE_CLASS_NORMAL, 0);
+	thisModule.fill(THIS_MODULE_TYPE, THIS_MODULE_CLASS, THIS_MODULE_SIGNATURE);
 
 	setupOTA(thisModule, mySSID, myPassword);
 

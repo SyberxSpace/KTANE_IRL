@@ -196,7 +196,7 @@ bool Edgework::isBlank() {
 
 
 // ++++++++ Serial Number ++++++++ //
-
+/*
 String SerialNumber::label() {
     String output = "??????";
     if ((data & 0xFC000000) != 0){
@@ -219,7 +219,7 @@ void SerialNumber::create(byte byte1, byte byte2, byte byte3, byte byte4) {
     data = data + byte4;
     SerialNumber::updateTags();
 }
-
+*/
 
 // ++++++++ CAN ID ++++++++ //
 
@@ -256,6 +256,10 @@ bool ModuleID::fill(String moduleType, moduleClasses moduleClass, byte moduleSig
         data = data + moduleSign;
         return true;
     }
+}
+
+bool ModuleID::fill(String moduleType, int moduleClass, int moduleSign) {
+    return ModuleID::fill(moduleType, (ModuleID::moduleClasses) moduleClass, (byte) moduleSign);
 }
 
 byte ModuleID::bigByte() {

@@ -8,6 +8,18 @@
 #include <ArduinoOTA.h>
 #include <TelnetStream.h>
 
+#ifndef THIS_MODULE_TYPE
+#define THIS_MODULE_TYPE "AA"
+#endif
+
+#ifndef THIS_MODULE_CLASS
+#define THIS_MODULE_CLASS 0
+#endif
+
+#ifndef THIS_MODULE_SIGNATURE
+#define THIS_MODULE_SIGNATURE 0
+#endif
+
 class Edgework {
     
     public:
@@ -80,6 +92,7 @@ class ModuleID {
 
         void create(byte bigByte, byte littleByte);
         bool fill(String moduleType, moduleClasses moduleClass, byte moduleSign);
+        bool fill(String moduleType, int moduleClass, int moduleSign);
 
         byte bigByte();
         byte littleByte();
