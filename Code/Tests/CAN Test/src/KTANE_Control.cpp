@@ -196,16 +196,52 @@ bool Edgework::isBlank() {
 
 
 // ++++++++ Serial Number ++++++++ //
-/*
+
 String SerialNumber::label() {
     String output = "??????";
-    if ((data & 0xFC000000) != 0){
-        output.setCharAt(0, ((data & 0xFC000000) << 24) + 'A' - 1);
+    if((data & 0xFC000000) != 0){
+        if((data & 0xFC000000) >> 26 <= 26){
+            output.setCharAt(0, ((data & 0xFC000000) >> 26) - 1 + 'A');
+        }else{
+            output.setCharAt(0, ((data & 0xFC000000) >> 26) - 27 + '0');
+        }
     }
+    if((data & 0x03F00000) != 0){
+        if((data & 0x03F00000) >> 20 <= 26){
+            output.setCharAt(1, ((data & 0x03F00000) >> 20) - 1 + 'A');
+        }else{
+            output.setCharAt(1, ((data & 0x03F00000) >> 20) - 27 + '0');
+        }
+    }
+    if((data & 0x000F0000) != 0){
+        output.setCharAt(2, ((data & 0x000F0000) >> 16) - 1 + '0');
+    }
+    if((data & 0x0000F800) != 0){
+        output.setCharAt(3, ((data & 0x0000F800) >> 11) - 1 + 'A');
+    }
+    if((data & 0x000007C0) != 0){
+        output.setCharAt(4, ((data & 0x000007C0) >> 6) - 1 + 'A');
+    }
+    if((data & 0x0000003C) != 0){
+        output.setCharAt(5, ((data & 0x0000003C) >> 2) - 1 + '0');
+    }
+    return output;
 }
 
 void SerialNumber::updateTags() {
-    
+    String localString = label();
+    hasVowel = false;
+    for(int i = 0; i < 6; i++){
+        hasVowel = hasVowel || (localString.charAt(i) == 'A');
+        hasVowel = hasVowel || (localString.charAt(i) == 'E');
+        hasVowel = hasVowel || (localString.charAt(i) == 'I');
+        hasVowel = hasVowel || (localString.charAt(i) == 'O');
+        hasVowel = hasVowel || (localString.charAt(i) == 'U');
+    }
+    if(localString.charAt(5) != '?'){
+        isEven = (localString.charAt(5) - '0') % 2 == 0 ? true : false;
+        isOdd = !isEven;
+    }
 }
 
 void SerialNumber::create(byte byte1, byte byte2, byte byte3, byte byte4) {
@@ -217,9 +253,82 @@ void SerialNumber::create(byte byte1, byte byte2, byte byte3, byte byte4) {
     data = data + byte3;
     data = data << 8;
     data = data + byte4;
-    SerialNumber::updateTags();
+    updateTags();
 }
-*/
+
+bool SerialNumber::fill(String serialString) {
+    bool fail = false;
+    data = 0x00000000;
+
+    if(serialString.charAt(0) >= 'A' && serialString.charAt(0) <= 'Z'){
+        data = data + (serialString.charAt(0) - 'A' + 1);
+    }else if(serialString.charAt(0) >= '0' && serialString.charAt(0) <= '9'){
+        data = data + (serialString.charAt(0) - '0' + 27);
+    }else{
+        fail = true;
+    }
+    data = data << 6;
+
+    if(serialString.charAt(1) >= 'A' && serialString.charAt(1) <= 'Z'){
+        data = data + (serialString.charAt(1) - 'A' + 1);
+    }else if(serialString.charAt(1) >= '0' && serialString.charAt(1) <= '9'){
+        data = data + (serialString.charAt(1) - '0' + 27);
+    }else{
+        fail = true;
+    }
+    data = data << 4;
+
+    if(serialString.charAt(2) >= '0' && serialString.charAt(2) <= '9'){
+        data = data + (serialString.charAt(2) - '0' + 1);
+    }else{
+        fail = true;
+    }
+    data = data << 5;
+
+    if(serialString.charAt(3) >= 'A' && serialString.charAt(3) <= 'Z'){
+        data = data + (serialString.charAt(3) - 'A' + 1);
+    }else{
+        fail = true;
+    }
+    data = data << 5;
+
+    if(serialString.charAt(4) >= 'A' && serialString.charAt(4) <= 'Z'){
+        data = data + (serialString.charAt(4) - 'A' + 1);
+    }else{
+        fail = true;
+    }
+    data = data << 4;
+
+    if(serialString.charAt(5) >= '0' && serialString.charAt(5) <= '9'){
+        data = data + (serialString.charAt(5) - '0' + 1);
+    }else{
+        fail = true;
+    }
+    data = data << 2;
+
+    if(fail) {
+        data = 0x00000000;
+    }
+    updateTags();
+    return !fail;
+}
+
+byte SerialNumber::byte1() {
+    return (byte) ((data & 0xFF000000) >> 24);
+}
+
+byte SerialNumber::byte2() {
+    return (byte) ((data & 0x00FF0000) >> 16);
+}
+
+byte SerialNumber::byte3() {
+    return (byte) ((data & 0x0000FF00) >> 8);
+}
+
+byte SerialNumber::byte4() {
+    return (byte) (data & 0x000000FF);
+}
+
 
 // ++++++++ CAN ID ++++++++ //
 

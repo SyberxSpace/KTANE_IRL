@@ -10,7 +10,7 @@
 bool useSerial = true;
 bool useTelnet = true;
 
-#define KTANEPrint(x,...) if(useSerial){Serial.printf(x,__VA_ARGS__);}if(useTelnet){TelnetStream.printf(x,__VA_ARGS__);}
+#define KTANEPrint(...) if(useSerial){Serial.printf(__VA_ARGS__);}if(useTelnet){TelnetStream.printf(__VA_ARGS__);}
 
 // MODULE VARIABLES //
 
@@ -28,49 +28,60 @@ Edgework edgeWork5;
 ModuleID thisModule;
 ModuleID copyModule;
 
+SerialNumber testSerial;
+
 void setup() {
 
 	Serial.begin(115200);
 	delay(100);
 
-	/*
-	edgeWork1.fillBattery('A');
-	edgeWork2.fillIndicator("FRK",true);
-	edgeWork3.fillPort(1,0,1,0,0,1);
-	edgeWork4.fillIndicator("CAR",false);
-	edgeWork5.create(edgeWork2.isType(), edgeWork2.bigByte(), edgeWork2.littleByte());
-
-	Serial.println(edgeWork1.numBatteries());
-	Serial.println(edgeWork2.label());
-	Serial.println(edgeWork3.hasParallel());
-	Serial.println(edgeWork4.isLit());
-	Serial.println(edgeWork5.isType());
-	Serial.println(edgeWork5.label());
-	Serial.println(edgeWork5.isLit());
-
-	Serial.println("");
-
-	*/
-
 	thisModule.fill(THIS_MODULE_TYPE, THIS_MODULE_CLASS, THIS_MODULE_SIGNATURE);
-
 	setupOTA(thisModule, mySSID, myPassword);
 
 }
 
-void printer(const char *input, ... ){
-	char buffer[255];
-	va_list args;
-	va_start(args, input);
-	vsprintf(buffer, input, args);
-	//TelnetStream.printf(input, args);
-	//Serial.printf(input, args);
-	TelnetStream.print(buffer);
-	va_end(args);
-}
-
 void loop() {
+
+	KTANEPrint("\r\n\r\n++++ Begin Test ++++\r\n");
 	ArduinoOTA.handle();
-	KTANEPrint("The time is currently %.4X%.4X.\n\r", (uint) (millis() && 0xFF00) >> 8, (uint) millis());
+	delay(500);
+
+	KTANEPrint("Attempting Serial with \"AAAAAA\" : %s\r\n", testSerial.fill("AAAAAA") ? "Success" : "Fail");
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Attempting Serial with \"5B6QA2\" : %s\r\n", testSerial.fill("5B6QA2") ? "Success" : "Fail");
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Serial data : %.2X%.2X%.2X%.2X : %s\r\n", testSerial.byte1(), testSerial.byte2(), testSerial.byte3(), testSerial.byte4(), testSerial.label());
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Serial %s a vowel.\r\n", testSerial.hasVowel ? "has" : "does not have");
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Serial %s even.\r\n", testSerial.isEven ? "is" : "is not");
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Attempting Serial with \"2B0MB5\" : %s\r\n", testSerial.fill("2B0MB5") ? "Success" : "Fail");
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Serial data : %.2X%.2X%.2X%.2X : %s\r\n", testSerial.byte1(), testSerial.byte2(), testSerial.byte3(), testSerial.byte4(), testSerial.label());
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Serial %s a vowel.\r\n", testSerial.hasVowel ? "has" : "does not have");
+	ArduinoOTA.handle();
+	delay(500);
+
+	KTANEPrint("Serial %s even.\r\n", testSerial.isEven ? "is" : "is not");
+	ArduinoOTA.handle();
+	delay(500);
+
+	ArduinoOTA.handle();
 	delay(500);
 }
